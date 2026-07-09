@@ -48,21 +48,3 @@ def test_motorcycle_inherits_create_fields_and_generates_id():
     _assert_model_fields(motorcycle, motorcycle_data)
     assert isinstance(motorcycle.id, str)
     assert motorcycle.id
-
-
-def test_non_supported_null_fields():
-    breakpoint()
-    motorcycle_data = {
-        "make": "Honda",
-        "model": "CBR600RR",
-        "year": 2021,
-        "category": "sport",
-        "engine_cc": 599,
-        "power_hp": 118.0,
-        "weight_kg": 189.0,
-        "seat_height_mm": None,
-        "features": ["Quickshifter"],
-        "description": "A track-focused supersport machine.",
-    }
-
-    
