@@ -11,3 +11,6 @@ class MotorcycleService:
 
     def get_motorcycle(self, motorcycle_id: str) -> Motorcycle | None:
         return self.repository.get(motorcycle_id)
+
+    def list_motorcycles(self) -> list[Motorcycle]:
+        return self.repository.list()
