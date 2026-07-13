@@ -1,5 +1,6 @@
-from app.domain.motorcycle import MotorcycleCreate, Motorcycle
+from app.domain.motorcycle import Motorcycle, MotorcycleCreate
 from app.repositories.motorcycle_repository import InMemoryMotorcycleRepository
+
 
 def test_repository_creates_motorcycle():
     repo = InMemoryMotorcycleRepository()

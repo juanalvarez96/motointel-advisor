@@ -1,5 +1,6 @@
 from app.domain.motorcycle import Motorcycle, MotorcycleCreate
 
+
 class InMemoryMotorcycleRepository:
     def __init__(self) -> None:
         self._motorcycles: dict[str, Motorcycle] = {}
