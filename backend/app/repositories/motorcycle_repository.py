@@ -3,11 +3,15 @@ from app.domain.motorcycle import Motorcycle, MotorcycleCreate
 class InMemoryMotorcycleRepository:
     def __init__(self) -> None:
         self._motorcycles: dict[str, Motorcycle] = {}
+
     def create(self, payload: MotorcycleCreate) -> Motorcycle:
-        raise NotImplementedError("This method is not implemented yet.")
+        data = payload.model_dump()
+        motorcycle = Motorcycle(**data)
+        self._motorcycles[motorcycle.id] = motorcycle
+        return motorcycle
     
     def get(self, motorcycle_id: str) -> Motorcycle | None:
-        raise NotImplementedError("This method is not implemented yet.")
+        return self._motorcycles.get(motorcycle_id)
     
     def list(self) -> list[Motorcycle]:
-        raise NotImplementedError("This method is not implemented yet.")
+        return list(self._motorcycles.values())
