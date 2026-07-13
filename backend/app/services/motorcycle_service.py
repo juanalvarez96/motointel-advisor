@@ -8,3 +8,6 @@ class MotorcycleService:
 
     def create_motorcycle(self, payload: MotorcycleCreate) -> Motorcycle:
         return self.repository.create(payload)
+
+    def get_motorcycle(self, motorcycle_id: str) -> Motorcycle | None:
+        return self.repository.get(motorcycle_id)
