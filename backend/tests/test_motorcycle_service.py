@@ -21,6 +21,6 @@ def test_service_creates_motorcycle() -> None:
         category="naked",
     )
 
-    created = service.repository.create(payload)
+    created = service.create_motorcycle(payload)
     returned_motorcycle = service.repository.get(created.id)
     assert returned_motorcycle.id == created.id
