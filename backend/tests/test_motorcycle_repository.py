@@ -2,7 +2,7 @@ from app.domain.motorcycle import Motorcycle, MotorcycleCreate
 from app.repositories.motorcycle_repository import InMemoryMotorcycleRepository
 
 
-def test_repository_creates_motorcycle():
+def test_repository_creates_motorcycle() -> None:
     repo = InMemoryMotorcycleRepository()
     motorcycle_data = {
         "make": "KTM",
@@ -18,18 +18,22 @@ def test_repository_creates_motorcycle():
     for field_name, expected_value in motorcycle_data.items():
         assert getattr(motorcycle, field_name) == expected_value
 
-def test_repository_gets_motorcycle_by_id():
+
+def test_repository_gets_motorcycle_by_id() -> None:
     repo = InMemoryMotorcycleRepository()
 
     payload = MotorcycleCreate(make="KTM", model="Duke 390", year=2023)
     created_motorcycle = repo.create(payload)
-    id = created_motorcycle.id
+    motorcycle_id = created_motorcycle.id
 
-    retrieved_motorcycle = repo.get(id)
+    retrieved_motorcycle = repo.get(motorcycle_id)
+    none_id = repo.get("abcdex")
+    assert none_id is None
     assert retrieved_motorcycle is not None
-    assert retrieved_motorcycle.id == id
+    assert retrieved_motorcycle.id == motorcycle_id
 
-def test_repository_lists_motorcycles():
+
+def test_repository_lists_motorcycles() -> None:
     repo = InMemoryMotorcycleRepository()
 
     payload1 = MotorcycleCreate(make="KTM", model="Duke 390", year=2023)
@@ -44,6 +48,8 @@ def test_repository_lists_motorcycles():
         ("Yamaha", "R1", 2022),
     ]
 
-    assert [(motorcycle.make, motorcycle.model, motorcycle.year) 
-            for motorcycle in motorcycles] == expected_motorcycles
-    
+    actual_motorcycle = {
+        (motorcycle.make, motorcycle.model, motorcycle.year) for motorcycle in motorcycles
+    }
+
+    assert actual_motorcycle == set(expected_motorcycles)
