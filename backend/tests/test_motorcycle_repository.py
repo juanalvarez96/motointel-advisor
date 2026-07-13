@@ -14,7 +14,7 @@ def test_repository_creates_motorcycle():
     motorcycle = repo.create(motorcycle_create)
 
     assert isinstance(motorcycle, Motorcycle)
-    assert motorcycle.id is not None
+    assert motorcycle.id
     for field_name, expected_value in motorcycle_data.items():
         assert getattr(motorcycle, field_name) == expected_value
 
