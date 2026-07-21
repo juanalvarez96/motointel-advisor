@@ -45,3 +45,18 @@ def get_motorcycle(
         )
 
     return motorcycle
+
+
+@router.get(
+    "/motorcycles",
+    response_model=list[Motorcycle],
+)
+def list_motorcycles(
+    repository: Annotated[
+        InMemoryMotorcycleRepository,
+        Depends(get_motorcycle_repository),
+    ],
+) -> list[Motorcycle]:
+    service = MotorcycleService(repository)
+
+    return service.list_motorcycles()

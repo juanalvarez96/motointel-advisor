@@ -44,3 +44,26 @@ def test_get_motorcycle_endpoint() -> None:
 
     assert retrieved["id"] == motorcycle_id
     assert retrieved["make"] == payload["make"]
+
+def test_list_motorcycles_endpoint() -> None:
+    payload = {
+        "make": "Yamaha",
+        "model": "MT-07",
+        "year": 2025,
+        "category": "naked",
+    }
+
+    create_response = client.post("/motorcycles", json=payload)
+    created = create_response.json()
+
+    response = client.get("/motorcycles")
+
+    assert response.status_code == 200
+
+    motorcycles = response.json()
+
+    assert isinstance(motorcycles, list)
+    assert any(
+        motorcycle["id"] == created["id"]
+        for motorcycle in motorcycles
+    )
