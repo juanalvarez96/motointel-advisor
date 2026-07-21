@@ -60,3 +60,25 @@ def list_motorcycles(
     service = MotorcycleService(repository)
 
     return service.list_motorcycles()
+
+
+@router.delete(
+    "/motorcycles/{motorcycle_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
+def delete_motorcycle(
+    motorcycle_id: str,
+    repository: Annotated[
+        InMemoryMotorcycleRepository,
+        Depends(get_motorcycle_repository),
+    ],
+) -> None:
+    service = MotorcycleService(repository)
+
+    deleted = service.delete_motorcycle(motorcycle_id)
+
+    if not deleted:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Motorcycle not found",
+        )

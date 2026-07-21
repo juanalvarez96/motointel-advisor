@@ -14,3 +14,6 @@ class MotorcycleService:
 
     def list_motorcycles(self) -> list[Motorcycle]:
         return self.repository.list()
+
+    def delete_motorcycle(self, motorcycle_id: str) -> bool:
+        return self.repository.delete(motorcycle_id)

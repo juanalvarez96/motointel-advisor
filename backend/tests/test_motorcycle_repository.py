@@ -53,3 +53,20 @@ def test_repository_lists_motorcycles() -> None:
     }
 
     assert actual_motorcycle == set(expected_motorcycles)
+
+
+def test_delete_motorcycle() -> None:
+    repository = InMemoryMotorcycleRepository()
+    motorcycle = repository.create(
+        MotorcycleCreate(
+            make="Suzuki",
+            model="V-Strom 800DE",
+            year=2025,
+            category="adventure",
+        )
+    )
+
+    deleted = repository.delete(motorcycle.id)
+
+    assert deleted is True
+    assert repository.get(motorcycle.id) is None

@@ -16,3 +16,9 @@ class InMemoryMotorcycleRepository:
 
     def list(self) -> list[Motorcycle]:
         return list(self._motorcycles.values())
+
+    def delete(self, motorcycle_id: str) -> bool:
+        if motorcycle_id in self._motorcycles:
+            del self._motorcycles[motorcycle_id]
+            return True
+        return False

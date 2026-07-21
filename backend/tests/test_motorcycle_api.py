@@ -108,3 +108,30 @@ def test_create_motorcycle_with_invalid_year_returns_422() -> None:
 
     response_data = response.json()
     assert response_data["detail"]
+
+
+def test_delete_motorcycle_endpoint() -> None:
+    payload = {
+        "make": "Suzuki",
+        "model": "V-Strom 800DE",
+        "year": 2025,
+        "category": "adventure",
+    }
+
+    create_response = client.post("/motorcycles", json=payload)
+    motorcycle_id = create_response.json()["id"]
+
+    delete_response = client.delete(f"/motorcycles/{motorcycle_id}")
+
+    assert delete_response.status_code == 204
+
+    get_response = client.get(f"/motorcycles/{motorcycle_id}")
+
+    assert get_response.status_code == 404
+
+
+def test_delete_unknown_motorcycle_returns_404() -> None:
+    response = client.delete("/motorcycles/unknown-id")
+
+    assert response.status_code == 404
+    assert response.json()["detail"] == "Motorcycle not found"
