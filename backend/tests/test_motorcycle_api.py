@@ -23,6 +23,7 @@ def test_create_motorcycle_endpoint() -> None:
     assert response_data["model"] == "CB650R"
     assert response_data["id"]
 
+
 def test_get_motorcycle_endpoint() -> None:
     payload = {
         "make": "Honda",
@@ -45,6 +46,7 @@ def test_get_motorcycle_endpoint() -> None:
     assert retrieved["id"] == motorcycle_id
     assert retrieved["make"] == payload["make"]
 
+
 def test_list_motorcycles_endpoint() -> None:
     payload = {
         "make": "Yamaha",
@@ -63,7 +65,14 @@ def test_list_motorcycles_endpoint() -> None:
     motorcycles = response.json()
 
     assert isinstance(motorcycles, list)
-    assert any(
-        motorcycle["id"] == created["id"]
-        for motorcycle in motorcycles
-    )
+    assert any(motorcycle["id"] == created["id"] for motorcycle in motorcycles)
+
+
+def test_get_unknown_motorcycle_returns_404() -> None:
+    response = client.get("/motorcycles/unknownd_id")
+
+    assert response.status_code == 404
+
+    response_data = response.json()
+
+    assert response_data["detail"] == "Motorcycle not found"
