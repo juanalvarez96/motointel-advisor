@@ -1,6 +1,21 @@
+import pytest
 from fastapi.testclient import TestClient
 
+from app.api.dependencies import get_motorcycle_repository
 from app.main import app
+from app.repositories.motorcycle_repository import InMemoryMotorcycleRepository
+
+
+@pytest.fixture(autouse=True)
+def use_fresh_repository():
+    repository = InMemoryMotorcycleRepository()
+
+    app.dependency_overrides[get_motorcycle_repository] = lambda: repository
+
+    yield
+
+    app.dependency_overrides.clear()
+
 
 client = TestClient(app)
 
@@ -65,7 +80,8 @@ def test_list_motorcycles_endpoint() -> None:
     motorcycles = response.json()
 
     assert isinstance(motorcycles, list)
-    assert any(motorcycle["id"] == created["id"] for motorcycle in motorcycles)
+    assert len(motorcycles) == 1
+    assert motorcycles[0]["id"] == created["id"]
 
 
 def test_get_unknown_motorcycle_returns_404() -> None:
