@@ -33,3 +33,17 @@ class MotorcycleCreate(BaseModel):
 
 class Motorcycle(MotorcycleCreate):
     id: str = Field(default_factory=lambda: str(uuid4()))
+
+
+class MotorcycleUpdate(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
+    make: str | None = Field(default=None, min_length=1)
+    model: str | None = Field(default=None, min_length=1)
+    year: int | None = Field(default=None, ge=1900, le=2100)
+    category: MotorcycleCategory | None = None
+    engine_cc: int | None = Field(default=None, ge=1)
+    power_hp: float | None = Field(default=None, ge=0)
+    weight_kg: float | None = Field(default=None, ge=0)
+    seat_height_mm: int | None = Field(default=None, ge=0)
+    features: list[str] | None = None
+    description: str | None = None

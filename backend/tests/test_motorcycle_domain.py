@@ -1,4 +1,4 @@
-from app.domain.motorcycle import Motorcycle, MotorcycleCreate
+from app.domain.motorcycle import Motorcycle, MotorcycleCreate, MotorcycleUpdate
 
 
 def _assert_model_fields(model, expected_fields):
@@ -48,3 +48,10 @@ def test_motorcycle_inherits_create_fields_and_generates_id():
     _assert_model_fields(motorcycle, motorcycle_data)
     assert isinstance(motorcycle.id, str)
     assert motorcycle.id
+
+
+def test_motorcycle_update_accepts_partial_data() -> None:
+    update = MotorcycleUpdate(weight_kg=208.0)
+
+    assert update.weight_kg == 208.0
+    assert update.make is None
