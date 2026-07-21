@@ -76,3 +76,19 @@ def test_get_unknown_motorcycle_returns_404() -> None:
     response_data = response.json()
 
     assert response_data["detail"] == "Motorcycle not found"
+
+
+def test_create_motorcycle_with_invalid_year_returns_422() -> None:
+    payload = {
+        "make": "Honda",
+        "model": "CB650R",
+        "year": 8888,
+        "category": "naked",
+    }
+
+    response = client.post("/motorcycles", json=payload)
+
+    assert response.status_code == 422
+
+    response_data = response.json()
+    assert response_data["detail"]
