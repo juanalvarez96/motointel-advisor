@@ -1,9 +1,9 @@
 from app.domain.motorcycle import Motorcycle, MotorcycleCreate, MotorcycleUpdate
-from app.repositories.motorcycle_repository import InMemoryMotorcycleRepository
+from app.repositories.base import MotorcycleRepository
 
 
 class MotorcycleService:
-    def __init__(self, repository: InMemoryMotorcycleRepository) -> None:
+    def __init__(self, repository: MotorcycleRepository) -> None:
         self.repository = repository
 
     def create_motorcycle(self, payload: MotorcycleCreate) -> Motorcycle:
