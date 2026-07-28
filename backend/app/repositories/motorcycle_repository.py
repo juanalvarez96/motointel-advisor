@@ -1,0 +1,36 @@
+from app.domain.motorcycle import Motorcycle, MotorcycleCreate, MotorcycleUpdate
+
+
+class InMemoryMotorcycleRepository:
+    def __init__(self) -> None:
+        self._motorcycles: dict[str, Motorcycle] = {}
+
+    def create(self, payload: MotorcycleCreate) -> Motorcycle:
+        data = payload.model_dump()
+        motorcycle = Motorcycle(**data)
+        self._motorcycles[motorcycle.id] = motorcycle
+        return motorcycle
+
+    def get(self, motorcycle_id: str) -> Motorcycle | None:
+        return self._motorcycles.get(motorcycle_id)
+
+    def list(self) -> list[Motorcycle]:
+        return list(self._motorcycles.values())
+
+    def delete(self, motorcycle_id: str) -> bool:
+        if motorcycle_id in self._motorcycles:
+            del self._motorcycles[motorcycle_id]
+            return True
+        return False
+
+    def update(self, motorcycle_id: str, payload: MotorcycleUpdate) -> Motorcycle | None:
+        motorcycle = self.get(motorcycle_id)
+
+        if motorcycle is None:
+            return None
+
+        changes = payload.model_dump(exclude_unset=True)
+        updated_motorcycle = motorcycle.model_copy(update=changes)
+        self._motorcycles[motorcycle_id] = updated_motorcycle
+
+        return updated_motorcycle
