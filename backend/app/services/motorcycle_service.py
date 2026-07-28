@@ -1,4 +1,4 @@
-from app.domain.motorcycle import Motorcycle, MotorcycleCreate
+from app.domain.motorcycle import Motorcycle, MotorcycleCreate, MotorcycleUpdate
 from app.repositories.motorcycle_repository import InMemoryMotorcycleRepository
 
 
@@ -17,3 +17,6 @@ class MotorcycleService:
 
     def delete_motorcycle(self, motorcycle_id: str) -> bool:
         return self.repository.delete(motorcycle_id)
+
+    def update_motorcycle(self, motorcycle_id: str, payload: MotorcycleUpdate) -> Motorcycle | None:
+        return self.repository.update(motorcycle_id, payload)

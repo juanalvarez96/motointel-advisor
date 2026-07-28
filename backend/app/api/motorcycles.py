@@ -3,7 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from app.api.dependencies import get_motorcycle_repository
-from app.domain.motorcycle import Motorcycle, MotorcycleCreate
+from app.domain.motorcycle import Motorcycle, MotorcycleCreate, MotorcycleUpdate
 from app.repositories.motorcycle_repository import InMemoryMotorcycleRepository
 from app.services.motorcycle_service import MotorcycleService
 
@@ -82,3 +82,27 @@ def delete_motorcycle(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Motorcycle not found",
         )
+
+
+@router.patch(
+    "/motorcycles/{motorcycle_id}",
+    response_model=Motorcycle,
+)
+def update_motorcycle(
+    motorcycle_id: str,
+    payload: MotorcycleUpdate,
+    repository: Annotated[
+        InMemoryMotorcycleRepository,
+        Depends(get_motorcycle_repository),
+    ],
+) -> Motorcycle:
+    service = MotorcycleService(repository)
+
+    updated = service.update_motorcycle(motorcycle_id, payload)
+
+    if updated is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Motorcycle not found",
+        )
+    return updated
