@@ -85,7 +85,7 @@ def test_list_motorcycles_endpoint() -> None:
 
 
 def test_get_unknown_motorcycle_returns_404() -> None:
-    response = client.get("/motorcycles/unknownd_id")
+    response = client.get("/motorcycles/unknown_id")
 
     assert response.status_code == 404
 

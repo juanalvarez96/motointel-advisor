@@ -1,4 +1,4 @@
-from app.domain.motorcycle import Motorcycle, MotorcycleCreate
+from app.domain.motorcycle import Motorcycle, MotorcycleCreate, MotorcycleUpdate
 
 
 class InMemoryMotorcycleRepository:
@@ -22,3 +22,15 @@ class InMemoryMotorcycleRepository:
             del self._motorcycles[motorcycle_id]
             return True
         return False
+
+    def update(self, motorcycle_id: str, payload: MotorcycleUpdate) -> Motorcycle | None:
+        motorcycle = self.get(motorcycle_id)
+
+        if motorcycle is None:
+            return None
+
+        changes = payload.model_dump(exclude_unset=True)
+        updated_motorcycle = motorcycle.model_copy(update=changes)
+        self._motorcycles[motorcycle_id] = updated_motorcycle
+
+        return updated_motorcycle

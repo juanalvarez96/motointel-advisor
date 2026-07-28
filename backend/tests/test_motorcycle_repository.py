@@ -1,4 +1,4 @@
-from app.domain.motorcycle import Motorcycle, MotorcycleCreate
+from app.domain.motorcycle import Motorcycle, MotorcycleCreate, MotorcycleUpdate
 from app.repositories.motorcycle_repository import InMemoryMotorcycleRepository
 
 
@@ -70,3 +70,21 @@ def test_delete_motorcycle() -> None:
 
     assert deleted is True
     assert repository.get(motorcycle.id) is None
+
+
+def test_motorcycle_update() -> None:
+    repository = InMemoryMotorcycleRepository()
+    motorcycle = repository.create(
+        MotorcycleCreate(
+            make="Suzuki",
+            model="V-Strom 800DE",
+            year=2025,
+            category="adventure",
+            weight_kg=6473,
+        )
+    )
+    motorcycle = repository.update(
+        motorcycle.id,
+        MotorcycleUpdate(weight_kg=209),
+    )
+    assert repository.get(motorcycle.id).weight_kg == 209
