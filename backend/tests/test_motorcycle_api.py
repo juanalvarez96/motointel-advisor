@@ -55,7 +55,6 @@ def test_get_motorcycle_endpoint() -> None:
     get_response = client.get(f"/motorcycles/{motorcycle_id}")
 
     assert get_response.status_code == 200
-    #dummy!!
 
     retrieved = get_response.json()
 
